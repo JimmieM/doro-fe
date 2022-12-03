@@ -1,21 +1,36 @@
 ### About the test.
 
--
+- Hosted URL Frontend: doro.inventable.se
+- Hosted URL Backend: doro-api.inventable.se
+
+example: https://doro-api.inventable.se/traffic/position?lat=200&lng=200
+
+#### Overview
+
+Packages/libs:
+
+- Frontend
+- Backend
+- Docker
+
+Cloud: AWS
 
 ### Focus
 
 This solution (FE and BE) is focused on full-stack mostly. I didn't go deeper in any direction than needed to suffice the requirements of a MVP.
 
-Given the informa tion of the test I made the assumption of knowing what the MVP would be:
+Given the information of the test I made the assumption of knowing what the MVP would be:
 -We want to pull data from the Sveriges Radion Trafik API
 -A client must provide a geolocation for traffic notifications
 -A client can update the geolocation for traffic notifications
 -A client shows a relevant traffic incident that contains at a minimum (prio, title, location etc...)
-Not knowing what's to come, given my decisions of opening up for more features, reusable components and so on.
+Not knowing what's to come, given my decisions of working on it as "blackbox". It's not over-engineered to account for everything in the future, but not closed up making it hard to extend.
 
-Laying a small foundation, not bigger than needed, but broad enough to implement clean code and seperation. The backend being adaptable to extend with more features for both Traffic and new.
+Laying a small foundation, not bigger than needed, but broad enough to implement clean code and seperation. The backend being adaptable to extend with more features for both Traffic and new functionality.
 Same goes for frontend. What's missing is base implementation of context/auth and/or routing. Given this is very easy to add upon, but not yet needed.
 Having reusable smaller components such as buttons, input, toggles & even some hooks, it could easily be extended, IMHO. I don't find any modules being too highly coupled either.
+
+### thinking openly.
 
 A clear guide/vision has been layed on how to work the project. If we'd like a new module for another traffic resource other than Areas and Messages. It could easily be extended with the architecture in place. Add an API, Service and model factory if needed. Append new "sub service" to our Traffic service, if it doesn't break concerns and seperation too hard.
 
@@ -35,12 +50,11 @@ Another parent module such as ("traffic") would be created. For this instance "U
 
 Frontend implementation for this would also be super easy. Adding another API and state-hook ("Zustand"). Pages and custom modules, upon adding the reusable components.
 
-## Technologies and why?
+## Core technologies and why?
 
 ### FE
 
-- React with Tailwind. Of course I used Typescript. What kind of question is that.
-  I just enjoy being able to catch bugs during dev time. What type is that variable? Idk.
+React with Tailwind. Of course I used Typescript. The website is fully responsive.
 
 ### BE
 
@@ -53,7 +67,7 @@ Docker. Docker is undeniably great. Since the Frontend is being served as a SPA 
 
 I created a seperate package (doro-docker) to preserve Docker related scripts and deployment. It's a simple enough deployment where the Docker package is pulled onto an EC2, in this example. Run some scripts to install docker and docker-compose. Then a custom script to build the image by pulling the BE from GitHub. Would be better to store the image on AWS (ECS) or Docker but this is efficient enough.
 
-### General infrastructure
+## General infrastructure
 
 #### AWS <3
 
