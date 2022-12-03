@@ -1,6 +1,7 @@
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import classNames from "classnames";
-import { FC, useMemo, useState } from "react";
+import { FC, useMemo, useRef, useState } from "react";
+import { useKeyPress } from "../../hooks/keypress.hook";
 import { useSearch } from "../../hooks/search.hook";
 import { ITraffic } from "../../models/traffic.model";
 import { formatDate } from "../../util/date.util";
@@ -13,6 +14,12 @@ interface TrafficListProps {
 
 export const TrafficList: FC<TrafficListProps> = ({ items, onItemClick }) => {
   const [searchQuery, setSearchQuery] = useState("");
+  const searchInputRef = useRef<HTMLInputElement>();
+
+  useKeyPress({ key: "f", combineWith: "shift" }, () => {
+    // TODO. Fix trailing "F" being added to search string.
+    searchInputRef.current?.focus();
+  });
 
   const trafficItems = useSearch<ITraffic>(
     searchQuery,
@@ -27,7 +34,12 @@ export const TrafficList: FC<TrafficListProps> = ({ items, onItemClick }) => {
 
   return (
     <div>
-      <SimpleSearch value={searchQuery} onChange={setSearchQuery} />
+      <SimpleSearch
+        placeholder="[shift + f] eller sök efter trafikstörningar nära dig ..."
+        _ref={searchInputRef}
+        value={searchQuery}
+        onChange={setSearchQuery}
+      />
       {trafficItems && trafficItems?.length > 1 ? (
         <ul className="divide-y divide-gray-200 border-b border-gray-200 hover:cursor-pointer">
           {trafficItems.map((item, idx) => (

@@ -56,7 +56,7 @@ export const SelectGeoLocationModal: FC<SelectGeoLocationModalProps> = ({
 
   const contentMemo = useMemo(
     () => (
-      <div>
+      <>
         <GoogleMap
           mapContainerStyle={containerStyle}
           center={initialPosition}
@@ -78,7 +78,7 @@ export const SelectGeoLocationModal: FC<SelectGeoLocationModalProps> = ({
             />
           )}
         </GoogleMap>
-      </div>
+      </>
     ),
     [initialPosition, onLoad, onPositionClick, onUnmount, selectedLatLng]
   );

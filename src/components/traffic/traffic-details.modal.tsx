@@ -40,7 +40,7 @@ export const TrafficDetailsModal: FC<TrafficDetailsModalProps> = ({
 
   const contentMemo = useMemo(
     () => (
-      <div className="m-4">
+      <div className="m-4 max-w-md">
         <h3 className="font-normal text-gray-600 text-md">
           {item.description}
         </h3>
@@ -54,7 +54,7 @@ export const TrafficDetailsModal: FC<TrafficDetailsModalProps> = ({
           />
         </div>
         <div className="mt-10">
-          <p className="font-semibold text-gray-500 mb-4">Mer information</p>
+          <p className="font-semibold text-gray-600 mb-4">Övrig information</p>
           <SimpleCard items={cardDataMemo} />
         </div>
       </div>

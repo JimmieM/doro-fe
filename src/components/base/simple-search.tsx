@@ -6,6 +6,7 @@ interface SimpleSearchProps {
   placeholder?: string;
   value?: any;
   onChange?: (value: any) => void;
+  _ref: any;
 }
 
 export const SimpleSearch: FC<SimpleSearchProps> = ({
@@ -13,6 +14,7 @@ export const SimpleSearch: FC<SimpleSearchProps> = ({
   placeholder,
   value,
   onChange,
+  _ref,
 }) => {
   return (
     <div>
@@ -26,6 +28,7 @@ export const SimpleSearch: FC<SimpleSearchProps> = ({
       )}
       <div className=" relative rounded-md shadow-sm">
         <input
+          ref={_ref}
           value={value}
           onChange={({ target }) => onChange?.(target.value)}
           type="text"

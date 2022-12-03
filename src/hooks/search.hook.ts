@@ -12,7 +12,7 @@ export const useSearch = <T>(
   const prevSearchStr = usePrevious(searchStr);
 
   useEffect(() => {
-    const match = (val?: string) =>
+    const match = (val: string | undefined) =>
       val?.toLowerCase().includes(searchStr.toLowerCase());
 
     if (searchStr !== "" && searchStr !== prevSearchStr && list) {
