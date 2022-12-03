@@ -70,11 +70,11 @@ const TrafficListItem: FC<TrafficListItemProps> = ({
   const priorityColor = useMemo(() => {
     switch (item.priority) {
       case 1:
-        return "green";
+        return "red";
       case 2:
         return "orange";
       case 3:
-        return "red";
+        return "green";
       default:
         return "gray";
     }

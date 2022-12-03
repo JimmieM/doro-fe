@@ -17,9 +17,11 @@ Backend: NodeJS, NestJS, TypeScript, Docker
 
 Frontend focus: Light-weight, comprehensive and clean UI. Easy to see and find relevant data. Responsive enough to use on most common devices.
 
+#### Criticism is highly appreciated. Please.
+
 ### Focus
 
-This solution (FE and BE) is focused on full-stack mostly. I didn't go deeper in any direction than needed to suffice the requirements of a MVP. I chose technologies and libraries I feel warm in to feel confident in delivering quality code in time. Did experiment a bit with some features.
+This solution (FE and BE) is focused on full-stack mostly. I didn't go deeper in any direction than needed to suffice the requirements of a MVP. I chose technologies and libraries I feel warm in to feel confident in delivering quality code in time.
 
 Given the information of the test I made the assumption of knowing what the MVP would be:
 -We want to pull data from the Sveriges Radion Trafik API
@@ -32,26 +34,6 @@ Laying a small foundation, not bigger than needed, but broad enough to implement
 Same goes for frontend. What's missing is base implementation of context/auth and/or routing. Given this is very easy to add upon, but not yet needed.
 Having reusable smaller components such as buttons, input, toggles & even some hooks, it could easily be extended. I don't find any modules being too highly coupled either.
 
-#### thinking openly.
-
-A clear guide/vision has been layed on how to work the project. If we'd like a new module for another traffic resource other than Areas and Messages. It could easily be extended with the architecture in place. Add an API, Service and model factory if needed. Append new "sub service" to our Traffic service, if it doesn't break concerns and seperation too hard.
-
-Let's say another feature would be "User". There we'd include perhaps a phonenumber or some kind of notification token (iOS, Android) along with user data and/or settings.
-Another parent module such as ("traffic") would be created. For this instance "User". This time we don't want API, rather a repository and database.
-
-// Just an idea.
-
-- User
-  - user.service.ts
-  - user.repository.ts
-  - user.query.ts
-  - Notification
-    - notification.service.ts
-    - ios.notification.api.ts
-    - android.notification.api.ts
-
-Frontend implementation for this would also be super easy. Adding another API and state-hook ("Zustand"). Pages and custom modules, upon adding the reusable components.
-
 ## Core technologies and why?
 
 ### FE
@@ -60,9 +42,11 @@ React with Tailwind. Of course I used Typescript.
 Why Tailwind (rant)?
 Since starting to code, writing css has always been lots of work. Learning all of it and then to use it effiently in a larger codebase. As much as love writing UI. Laying the groundworks takes a lot of time. From writing reusable classes to implementing the actual design guide and so on. Don't even begin with responsiveness. Getting a quick responsive feel with Tailwind's media query prefixes is really comfortable. Same with accessibilty.
 
+#### Tailwind rant - optional
+
 I've tried out many libraries and ways to improve styling. From simplifying classic css with scss to styled components, stitches UI. Over to bigger libraries such as Material UI and Chakra UI. Having a bigger library for this application now seems overkill at best.
 
-Tailwind's learning curve can be quite steep, but writing code has never been more enjoyable for me. Most templating, excessive css and styling is minified. There's a tradeoff for the html to grow and become unreadable (which personally I don't agree with).. If the html becomes too large with tailwind, it's usually too large without tailwind. More consise and reusable components which needs reusable css. Is usually as well contained in their components, just without their css files.
+Tailwind's learning curve can be quite steep, but writing code has never been more enjoyable for me. Most templating, excessive css and styling is minified. There's a tradeoff for the html to grow and become unreadable (which personally I don't agree with).. If the html becomes too large with tailwind, it's usually too large without tailwind. More concise and reusable components which needs reusable css. Is usually as well contained in their components, just without their css files.
 
 Move fast, change fast. In regards of having no guides to follow in design. Myself not being quite sure how I want it to look. I made a choice of not showing off my pure css-skills. In favor of having a easier way to work and easily modify this "MVP". Also giving me the possibility to put more time on other areas.
 
@@ -70,13 +54,11 @@ Move fast, change fast. In regards of having no guides to follow in design. Myse
 
 NodeJS with Typescript. I find NodeJS very easy to work with generally. A simple web API has never been cleaner with NestJS for example.
 
-.NET core is a true love, but that's another discussion.
-
 ### CI/CD
 
 Docker. Docker is undeniably great. Since the Frontend is being served as a SPA on CDN (Cloudfront ex.), only the backend is deployed with Docker.
 
-I created a seperate package (doro-docker) to preserve Docker related scripts and deployment. It's a simple enough deployment where the Docker package is pulled onto an EC2, in this example. Run some scripts to install docker and docker-compose. Then a custom script to build the image by pulling the BE from GitHub. Would be better to store the image on AWS (ECS) or Docker but this is efficient enough.
+I created a seperate package [doro-docker](https://github.com/JimmieM/doro-docker) to contain Docker related scripts and deployment. It's a simple enough deployment where the Docker package is pulled onto an EC2, in this example. Run some scripts to install docker and docker-compose. Then a custom script to build the image by pulling the BE from GitHub. Would be better to store the image on AWS (ECS) or Docker but this is efficient enough.
 
 ## General infrastructure
 
@@ -86,7 +68,7 @@ The frontend is served on an S3 bucket with CloudFront CDN on top.
 
 The backend is deployed onto an EC2 which is connected to an Application Load Balancer.
 
-## Why not "fullstack"???
+## Why not "fullstack"?
 
 NextJS would actually be pretty sweet here. Generally I don't like the idea of mixing frontend with backend. I'd love to see actual seperation of concern. For this case, the size of the project, it would actually be beneficial/efficient .
 However, given the requirement of perhaps multiple clients (ios, android and web), why not make the API an actual API? Or the frontend an actual frontend.
@@ -106,7 +88,7 @@ However, given the requirement of perhaps multiple clients (ios, android and web
 - Google Maps. I went for a walk and imagined the UI, and Google Maps just seemed awesome for it. At least give the user an option!
   As soon as the general modelling etc is done, implementing Google Maps wasn't such a hassle. Made a very similar thing in 2019. https://www.jimmiem.se/portfolio.html.
   Also picking your position just seemed easier with Maps, as well as easier for the consumer. Type your coordinates manually? Who even does that nowadays.
-- Zustand. Don't get me started on Zustand. It's amazing. State-management just got easy. Tired of boilerplate and unnessecary code? Zustand is literally like a global state hook. Doesn't fit all uses-cases. But sure do have a spot for this. I like working with it and saw a great opportunity to contain state.
+- Zustand. It's amazing. Zustand is literally like a global state hook. Doesn't fit all uses-cases, but sure do have a spot for this. User position and traffic items are stored like this. Prevent prop-drilling when needing Position in different places for example.
 
 ### BE
 
@@ -163,7 +145,19 @@ Note the Traffic Area Service and Traffic Message Service is indeed very small a
   My reasoning it that SR's XML response looks the same with "SR" being the wrapper, then next element is "Areas" or "Messages". By having a XML parser, then configured for SR's response to account for their wrappers (to access the data we want). To extend the class, add a node selector parameter. Doing this.. Feels okay. For this I think it's good enough.
   We've opened the possibility to get more data with XML easier.
 
-### Note. Pls dont steal my Maps API key. Due to assessment of data and security, the .env files is commited. Bad practice generally IMO.
+## Testing
+
+I've written tests to cover the lowest functionality. No E2E or integration. Rather unit tests covering the general flow of a specific service while mocking the actual API call. Making sure the data is being processed properly.
+
+### Note. Pls dont steal my Maps API key x). Due to assessment of data and security, the .env files is commited. Bad practice generally IMO.
+
+#### Thank you for reading!
+
+There's lots more to discuss. Please reach out with comments =)
+
+[dontClickThisLink](https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley)
+
+-
 
 ### `npm start`. Dont forget the npm install.
 
