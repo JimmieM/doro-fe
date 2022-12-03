@@ -25,19 +25,21 @@ export const TrafficList: FC<TrafficListProps> = ({ items, onItemClick }) => {
     ]
   );
 
-  return trafficItems ? (
+  return (
     <div>
       <SimpleSearch value={searchQuery} onChange={setSearchQuery} />
-      <ul className="divide-y divide-gray-200 border-b border-gray-200 hover:cursor-pointer">
-        {trafficItems.map((item, idx) => (
-          <TrafficListItem key={idx} item={item} onItemClick={onItemClick} />
-        ))}
-      </ul>
+      {trafficItems && trafficItems?.length > 1 ? (
+        <ul className="divide-y divide-gray-200 border-b border-gray-200 hover:cursor-pointer">
+          {trafficItems.map((item, idx) => (
+            <TrafficListItem key={idx} item={item} onItemClick={onItemClick} />
+          ))}
+        </ul>
+      ) : (
+        <h2 className="m-6 font-semibold text-sm text-gray-600">
+          Inga trafikstörningar hittades.
+        </h2>
+      )}
     </div>
-  ) : (
-    <h2 className="m-6 font-semibold text-lg text-gray-600">
-      Inga trafikstörningar hittades.
-    </h2>
   );
 };
 
