@@ -1,23 +1,25 @@
-### About the test.
+### Overview
 
 - Hosted URL Frontend: doro.inventable.se
 - Hosted URL Backend: doro-api.inventable.se
 
 example: https://doro-api.inventable.se/traffic/position?lat=200&lng=200
 
-### Overview
-
 Packages/libs:
 
-- [Frontend](https://github.com/JimmieM/doro-fe) (you're here)
+- [Frontend](https://github.com/JimmieM/doro-fe)
 - [Backend](https://github.com/JimmieM/doro-be)
 - [Docker](https://github.com/JimmieM/doro-docker)
 
-Cloud: AWS
+Cloud provider: AWS with services EC2, Application Load Balancer, CloudFront, S3
+Frontend: React SPA, TypeScript
+Backend: NodeJS, NestJS, TypeScript, Docker
+
+Frontend focus: Light-weight, comprehensive and clean UI. Easy to see and find relevant data. Responsive enough to use on most common devices.
 
 ### Focus
 
-This solution (FE and BE) is focused on full-stack mostly. I didn't go deeper in any direction than needed to suffice the requirements of a MVP.
+This solution (FE and BE) is focused on full-stack mostly. I didn't go deeper in any direction than needed to suffice the requirements of a MVP. I chose technologies and libraries I feel warm in to feel confident in delivering quality code in time. Did experiment a bit with some features.
 
 Given the information of the test I made the assumption of knowing what the MVP would be:
 -We want to pull data from the Sveriges Radion Trafik API
@@ -28,7 +30,7 @@ Not knowing what's to come, given my decisions of working on it as "blackbox". I
 
 Laying a small foundation, not bigger than needed, but broad enough to implement clean code and seperation. The backend being adaptable to extend with more features for both Traffic and new functionality.
 Same goes for frontend. What's missing is base implementation of context/auth and/or routing. Given this is very easy to add upon, but not yet needed.
-Having reusable smaller components such as buttons, input, toggles & even some hooks, it could easily be extended, IMHO. I don't find any modules being too highly coupled either.
+Having reusable smaller components such as buttons, input, toggles & even some hooks, it could easily be extended. I don't find any modules being too highly coupled either.
 
 #### thinking openly.
 
@@ -54,11 +56,20 @@ Frontend implementation for this would also be super easy. Adding another API an
 
 ### FE
 
-React with Tailwind. Of course I used Typescript. The website is fully responsive.
+React with Tailwind. Of course I used Typescript.
+Why Tailwind (rant)?
+Since starting to code, writing css has always been lots of work. Learning all of it and then to use it effiently in a larger codebase. As much as love writing UI. Laying the groundworks takes a lot of time. From writing reusable classes to implementing the actual design guide and so on. Don't even begin with responsiveness. Getting a quick responsive feel with Tailwind's media query prefixes is really comfortable. Same with accessibilty.
+
+I've tried out many libraries and ways to improve styling. From simplifying classic css with scss to styled components, stitches UI. Over to bigger libraries such as Material UI and Chakra UI. Having a bigger library for this application now seems overkill at best.
+
+Tailwind's learning curve can be quite steep, but writing code has never been more enjoyable for me. Most templating, excessive css and styling is minified. There's a tradeoff for the html to grow and become unreadable (which personally I don't agree with).. If the html becomes too large with tailwind, it's usually too large without tailwind. More consise and reusable components which needs reusable css. Is usually as well contained in their components, just without their css files.
+
+Move fast, change fast. In regards of having no guides to follow in design. Myself not being quite sure how I want it to look. I made a choice of not showing off my pure css-skills. In favor of having a easier way to work and easily modify this "MVP". Also giving me the possibility to put more time on other areas.
 
 ### BE
 
 NodeJS with Typescript. I find NodeJS very easy to work with generally. A simple web API has never been cleaner with NestJS for example.
+
 .NET core is a true love, but that's another discussion.
 
 ### CI/CD
@@ -105,11 +116,10 @@ However, given the requirement of perhaps multiple clients (ios, android and web
 
 ## What did I do and why?
 
-### Frontend.
+### FE
 
-UI-wise, I didn't have a clear vision. I just wanted a List/map view, with a clear indication of the users position. I don't want changing position or anything to be a haggle so just think simple. Provided by a simple button in the left top corner and the content (map/view) in the center, to begin with.
-Clicking the button shall simply provide the user with a map to select another position, if wanted.
-The map view was the last thing I made, given it's not a requirement. Again, it should be ;)
+UI-wise, I didn't have a clear vision. For starter I wanted a list with map view option, with a clear indication of the users position. I don't want changing position or anything to be a haggle so just think simple. Provided by a simple button in the left top corner and the content (map/view) in the center.
+Clicking the button should simply provide the user with a map to select another position, if wanted.
 
 Most components are written to be reusable. Such as buttons, toggles, cards and modals.
 
@@ -124,39 +134,34 @@ Generally I see a lot to be polished and improved on the frontend. Overall I'm p
 Added some cool extra stuff in the front-end just because I got too excited about it. Like search and keep a viewing history to easy go back and read an item.
 Being able to locate a traffic item on the map by first finding in the list is pretty sweet too.
 
-#### Issues to be resolved/improved upon.
+No need to enter Tailwind-land again.
+
+#### Key issues to be resolved/improved upon.
 
 - If you have a recently viewed traffic item based in another location than your current. You won't be able to see it on the map, since we're only populating both map and list with current items based on position. Interest ways to solve this.
 - When selecting a new position with the map, sometimes the selected position marker won't show. I can't reproduce this, and it's super weird. Still have some research to do regarding the Maps package, since it's a relatively new one I haven't used before.
 - Modal widths could be improved.
 
-### Backend
+### BE
 
 I love architecture and seperation of concerns. Everything in-between. My head itches when I know I can make something even easier or better, clearer, whatever.
 
-I decided to follow a simple rule when desiging the backend. Don't make it complicated, but not too simple either. Fine line..
+I decided to follow a simple rule when desiging the backend. Don't make it complicated. But not too coupled...
 Simply the Traffic Controller will ask the Traffic Service for messages for certain area.
 The Traffic Service will check with the Area Service to retreive correct area name for given position.
-The Area Service basically has an API to connect to SR. When XML is retreived, its being parsed by an "Traffic XML parser", which itself is just an extension of a XML parser (veeeeeery small class I wrote to encapsulate these things). The Area Service also has it own model factory to convert XML/DTO from SR into usably Models for our applications. The Messages Service works in the same way.
+The Area Service basically has an API to connect to SR. When XML is retreived, its being parsed by an "Traffic XML parser", which itself is just an extension of a XML parser (very small class I wrote to encapsulate these things). The Area Service also has it own model factory to convert XML/DTO from SR into usably Models for our applications. The Messages Service works in the same way.
 
 This gives the Traffic Service a parent-state. Maybe too much dependecies. But I feel it's okay for this.
 
-Area and messaging are two different concerns in SR's API. Given it should behave the same in ours. Not because we have too, but because it makes sense in our case.
+Area and messaging are two different concerns in SR's API. Given it should behave the same in ours. Not because we have too, but because it makes sense in our case as well.
 
 Note the Traffic Area Service and Traffic Message Service is indeed very small and maybe doesn't need to be encapuslated as yet.
-
-Wanted to build it in a way where the backend uses cron job to fetch SR api every x minutes. Save result in DB. Then based on position given by client, just get the saved data instead of spamming SR's API lol. It's super similar to my app, Cue, where I fetched data from the Police API, process it and by some cool code, find out exactly where the crime/info happened (they just set lat & lng to the same, no matter the crime..). That was the whole idea with Cue.
 
 #### Issues to be resolved/improved upon.
 
 - Weird XML parsing where wrapping element "Messages" of the messages response, being transformed into an Object of {Message: IMessage[]}. As mentioned, not too much focus on a perfect XML to JS/JSON parser..
   My reasoning it that SR's XML response looks the same with "SR" being the wrapper, then next element is "Areas" or "Messages". By having a XML parser, then configured for SR's response to account for their wrappers (to access the data we want). To extend the class, add a node selector parameter. Doing this.. Feels okay. For this I think it's good enough.
   We've opened the possibility to get more data with XML easier.
-
-### Other stuff I can mention.
-
-- Unfortunately the Git commit history isn't as detailed as I'd like. Due to me being to eager coding.
--
 
 ### Note. Pls dont steal my Maps API key. Due to assessment of data and security, the .env files is commited. Bad practice generally IMO.
 

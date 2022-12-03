@@ -1,34 +1,27 @@
-import { MapPinIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import { useCallback, useEffect, useState } from "react";
 import useLocalStorage from "../../hooks/localstorage.hook";
+import { useCurrentPosition } from "../../hooks/state/current-position.hook";
 import { useTraffic } from "../../hooks/state/traffic.hook";
-import { LatLng } from "../../models/position.model";
 import { ITraffic } from "../../models/traffic.model";
-import { SimpleButton } from "../base/simple-button";
 import { SimpleToggle } from "../base/simple-toggle";
-import { SelectGeoLocationModal } from "../traffic/select-geolocation.modal";
+import { PositionSidebar } from "../traffic/position-sidebar";
 import { TrafficDetailsModal } from "../traffic/traffic-details.modal";
 import { TrafficList } from "../traffic/traffic.list";
 import TrafficMap from "../traffic/traffic.map";
-import { ViewedTrafficItemsList } from "../traffic/viewed-traffic-items.list";
+
+const MAP_VIEW_LOCALSTORAGE_KEY = "HomePage_isMapView";
 
 export const HomePage = () => {
-  const { getByLatLng, addToViewedlist, viewedItems, clearViewedList } =
-    useTraffic();
+  const { items: trafficItems, addToViewedlist } = useTraffic();
+  const { position, city } = useCurrentPosition();
 
   const [isMapView, setIsMapView, toggleMapView] = useLocalStorage(
-    "HomePage_isMapView",
-    true
+    MAP_VIEW_LOCALSTORAGE_KEY,
+    false
   );
 
-  const [currentPosition, setCurrentPosition] = useState<LatLng | undefined>();
-  const [currentCity, setcurrentCity] = useState<string | undefined>();
+  const [mapPosition, setMapPosition] = useState(position);
 
-  const [mapPosition, setMapPosition] = useState(currentPosition);
-  const [trafficItems, setTrafficItems] = useState<ITraffic[] | undefined>();
-
-  const [selectGeolocationModalOpen, setSelectGeolocationModalOpen] =
-    useState(false);
   const [trafficDetailsModalOpen, setTrafficDetailsModalOpen] =
     useState<ITraffic | null>();
 
@@ -44,14 +37,6 @@ export const HomePage = () => {
     setTrafficDetailsModalOpen(undefined);
   }, []);
 
-  const openSelectLocationModalClick = useCallback(() => {
-    setSelectGeolocationModalOpen(true);
-  }, []);
-
-  const closeSelectLocationModalClick = useCallback(() => {
-    setSelectGeolocationModalOpen(false);
-  }, []);
-
   const onShowOnMapClick = useCallback(
     (item: ITraffic) => {
       setMapPosition({ lat: item.latitude, lng: item.longitude });
@@ -61,48 +46,12 @@ export const HomePage = () => {
     [closeDetailItemOnClick, setIsMapView]
   );
 
-  const onSelectGeolocation = useCallback(
-    (latLng: LatLng) => {
-      setCurrentPosition(latLng);
-      closeSelectLocationModalClick();
-    },
-    [closeSelectLocationModalClick]
-  );
-
   useEffect(() => {
-    if (!navigator.geolocation) return;
-
-    navigator.geolocation.watchPosition((position) => {
-      setCurrentPosition({
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
-      });
-    });
-  }, []);
-
-  useEffect(() => {
-    if (!currentPosition) return;
-
-    getByLatLng(currentPosition?.lat, currentPosition?.lng).then(
-      (trafficResult) => {
-        setTrafficItems(trafficResult?.messages);
-        setcurrentCity(trafficResult?.city);
-      }
-    );
-  }, [currentPosition, getByLatLng]);
-
-  useEffect(() => {
-    setMapPosition(currentPosition);
-  }, [currentPosition]);
+    setMapPosition(position);
+  }, [position]);
 
   return (
     <>
-      <SelectGeoLocationModal
-        onClose={closeSelectLocationModalClick}
-        onSelect={onSelectGeolocation}
-        isOpen={selectGeolocationModalOpen}
-        initialPosition={currentPosition}
-      />
       {!!trafficDetailsModalOpen && (
         <TrafficDetailsModal
           showOnMap={onShowOnMapClick}
@@ -114,66 +63,13 @@ export const HomePage = () => {
         <div className="mx-auto w-full max-w-7xl flex-grow lg:flex xl:px-8">
           <div className="min-w-0 flex-1 bg-white xl:flex">
             <div className="bg-white xl:w-64 xl:flex-shrink-0 xl:border-r xl:border-gray-200">
-              <div className="py-6 pl-4 pr-6 sm:pl-6 lg:pl-8 xl:pl-0">
-                <div className="flex items-center justify-between">
-                  <div className="flex-1 space-y-8">
-                    <div className="space-y-8 sm:flex sm:items-center sm:justify-between sm:space-y-0 xl:block xl:space-y-8">
-                      <div className="flex flex-col sm:flex-row xl:flex-col">
-                        <div>
-                          <p className="font-semibold text-sm text-gray-500 mb-2">
-                            Din position
-                          </p>
-                          <SimpleButton
-                            primary
-                            fullWidth
-                            onClick={openSelectLocationModalClick}
-                            title={
-                              !currentPosition && !currentCity
-                                ? "Välj en position"
-                                : currentCity
-                                ? currentCity
-                                : `${currentPosition?.lat} ${currentPosition?.lng}`
-                            }
-                            leftIcon={MapPinIcon}
-                          />
-                          {currentPosition && (
-                            <p className="mt-2 text-xs font-normal text-gray-500">
-                              Koordinater:{" "}
-                              {`${currentPosition?.lat.toFixed(
-                                4
-                              )} ${currentPosition?.lng.toFixed(4)}`}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                      <div className="mt-6">
-                        {viewedItems.length > 0 && (
-                          <div className="flex justify-between items-center">
-                            <h3 className="font-semibold text-gray-700 text-md">
-                              Tidigare visade inlägg
-                            </h3>
-
-                            <SimpleButton
-                              leftIcon={XMarkIcon}
-                              onClick={clearViewedList}
-                            />
-                          </div>
-                        )}
-                        <ViewedTrafficItemsList
-                          items={viewedItems}
-                          openDetailItemOnClick={openDetailItemOnClick}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <PositionSidebar openDetailItemOnClick={openDetailItemOnClick} />
             </div>
             <div className="bg-white lg:min-w-0 lg:flex-1">
               <div className="border-b border-t border-gray-200 pl-4 pr-6 pt-4 pb-4 sm:pl-6 lg:pl-8 xl:border-t-0 xl:pl-6 xl:pt-6">
                 <div className="flex items-center justify-between">
                   <h1 className="flex-1 text-lg font-medium">
-                    Trafikstörningar {currentCity ? `nära ${currentCity}` : ""}
+                    Trafikstörningar {city ? `nära ${city}` : ""}
                   </h1>
                   <SimpleToggle
                     title="Kartvy"

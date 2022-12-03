@@ -44,8 +44,9 @@ const TrafficMap: FC<TrafficMapProps> = ({
   const markers = useMemo(
     () =>
       items
-        ? items.map((item) => (
+        ? items.map((item, idx) => (
             <Marker
+              key={idx}
               label={item.title}
               position={{ lat: item.latitude, lng: item.longitude }}
               onClick={() => onItemClick(item)}

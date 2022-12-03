@@ -17,8 +17,11 @@ export const TrafficList: FC<TrafficListProps> = ({ items, onItemClick }) => {
   const searchInputRef = useRef<HTMLInputElement>();
 
   useKeyPress({ key: "f", combineWith: "shift" }, () => {
-    // TODO. Fix trailing "F" being added to search string.
+    // TODO. implement a real fix trailing "F" being added to search string.
     searchInputRef.current?.focus();
+    setTimeout(() => {
+      setSearchQuery("");
+    }, 0);
   });
 
   const trafficItems = useSearch<ITraffic>(

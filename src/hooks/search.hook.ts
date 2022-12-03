@@ -15,14 +15,15 @@ export const useSearch = <T>(
     const match = (val: string | undefined) =>
       val?.toLowerCase().includes(searchStr.toLowerCase());
 
-    if (searchStr !== "" && searchStr !== prevSearchStr && list) {
-      setRes(
-        list.filter((d) =>
-          find(d)
-            .map((val) => match(val))
-            .find((e) => !!e)
-        )
+    const filterList = (list: T[]) =>
+      list.filter((d) =>
+        find(d)
+          .map((val) => match(val))
+          .find((e) => !!e)
       );
+
+    if (searchStr !== "" && searchStr !== prevSearchStr && list) {
+      setRes(filterList(list));
     }
     if ((!searchStr || searchStr === "") && !emptyIfNoQuery) {
       setRes(list);
@@ -32,14 +33,7 @@ export const useSearch = <T>(
     }
     if (list !== prevList) {
       if ((!searchStr || searchStr === "") && !emptyIfNoQuery) setRes(list);
-      if (searchStr !== "" && emptyIfNoQuery && list)
-        setRes(
-          list.filter((d) =>
-            find(d)
-              .map((val) => match(val))
-              .find((e) => !!e)
-          )
-        );
+      if (searchStr !== "" && emptyIfNoQuery && list) setRes(filterList(list));
     }
   }, [emptyIfNoQuery, find, list, prevList, prevSearchStr, searchStr]);
   return res;
