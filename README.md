@@ -5,13 +5,13 @@
 
 example: https://doro-api.inventable.se/traffic/position?lat=200&lng=200
 
-#### Overview
+### Overview
 
 Packages/libs:
 
-- Frontend
-- Backend
-- Docker
+- [Frontend](https://github.com/JimmieM/doro-fe) (you're here)
+- [Backend](https://github.com/JimmieM/doro-be)
+- [Docker](https://github.com/JimmieM/doro-docker)
 
 Cloud: AWS
 
@@ -30,7 +30,7 @@ Laying a small foundation, not bigger than needed, but broad enough to implement
 Same goes for frontend. What's missing is base implementation of context/auth and/or routing. Given this is very easy to add upon, but not yet needed.
 Having reusable smaller components such as buttons, input, toggles & even some hooks, it could easily be extended, IMHO. I don't find any modules being too highly coupled either.
 
-### thinking openly.
+#### thinking openly.
 
 A clear guide/vision has been layed on how to work the project. If we'd like a new module for another traffic resource other than Areas and Messages. It could easily be extended with the architecture in place. Add an API, Service and model factory if needed. Append new "sub service" to our Traffic service, if it doesn't break concerns and seperation too hard.
 
@@ -164,6 +164,3 @@ Wanted to build it in a way where the backend uses cron job to fetch SR api ever
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.

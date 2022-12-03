@@ -120,11 +120,12 @@ export const HomePage = () => {
                     <div className="space-y-8 sm:flex sm:items-center sm:justify-between sm:space-y-0 xl:block xl:space-y-8">
                       <div className="flex flex-col sm:flex-row xl:flex-col">
                         <div>
-                          <p className="font-semibold text-gray-600 mb-2">
-                            Din position:
+                          <p className="font-semibold text-sm text-gray-500 mb-2">
+                            Din position
                           </p>
                           <SimpleButton
                             primary
+                            fullWidth
                             onClick={openSelectLocationModalClick}
                             title={
                               !currentPosition && !currentCity
@@ -137,7 +138,10 @@ export const HomePage = () => {
                           />
                           {currentPosition && (
                             <p className="mt-2 text-xs font-normal text-gray-500">
-                              {`${currentPosition?.lat} ${currentPosition?.lng}`}
+                              Koordinater:{" "}
+                              {`${currentPosition?.lat.toFixed(
+                                4
+                              )} ${currentPosition?.lng.toFixed(4)}`}
                             </p>
                           )}
                         </div>

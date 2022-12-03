@@ -5,7 +5,6 @@ interface SimpleCardProps {
   title?: string;
   description?: string;
   items: CardItem[];
-  disableEditMode?: boolean;
   onSave?: () => void;
 }
 
