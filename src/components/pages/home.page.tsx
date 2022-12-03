@@ -128,16 +128,18 @@ export const HomePage = () => {
                             onClick={openSelectLocationModalClick}
                             title={
                               !currentPosition && !currentCity
-                                ? "Ingen position vald "
+                                ? "Välj en position"
                                 : currentCity
                                 ? currentCity
                                 : `${currentPosition?.lat} ${currentPosition?.lng}`
                             }
                             leftIcon={MapPinIcon}
                           />
-                          <p className="mt-2 text-xs font-normal text-gray-500">
-                            {`${currentPosition?.lat} ${currentPosition?.lng}`}
-                          </p>
+                          {currentPosition && (
+                            <p className="mt-2 text-xs font-normal text-gray-500">
+                              {`${currentPosition?.lat} ${currentPosition?.lng}`}
+                            </p>
+                          )}
                         </div>
                       </div>
                       <div className="mt-6">

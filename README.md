@@ -6,7 +6,7 @@
 
 This solution (FE and BE) is focused on full-stack mostly. I didn't go deeper in any direction than needed to suffice the requirements of a MVP.
 
-Given the information of the test I made the assumption of knowing what the MVP would be:
+Given the informa tion of the test I made the assumption of knowing what the MVP would be:
 -We want to pull data from the Sveriges Radion Trafik API
 -A client must provide a geolocation for traffic notifications
 -A client can update the geolocation for traffic notifications
@@ -51,9 +51,19 @@ NodeJS with Typescript. I find NodeJS very easy to work with generally. A simple
 
 Docker. Docker is undeniably great. Since the Frontend is being served as a SPA on CDN (Cloudfront ex.), only the backend is deployed with Docker.
 
+I created a seperate package (doro-docker) to preserve Docker related scripts and deployment. It's a simple enough deployment where the Docker package is pulled onto an EC2, in this example. Run some scripts to install docker and docker-compose. Then a custom script to build the image by pulling the BE from GitHub. Would be better to store the image on AWS (ECS) or Docker but this is efficient enough.
+
+### General infrastructure
+
+#### AWS <3
+
+The frontend is served on an S3 bucket with CloudFront CDN on top.
+
+The backend is deployed onto an EC2 which is connected to an Application Load Balancer.
+
 ## Why not "fullstack"???
 
-NextJS would actually be pretty sweet here. Generally I don't like the idea of mixing frontend with backend. I'd love to see actual seperation of concern. For this case, the size of the project, it would actually be beneficial.
+NextJS would actually be pretty sweet here. Generally I don't like the idea of mixing frontend with backend. I'd love to see actual seperation of concern. For this case, the size of the project, it would actually be beneficial/efficient .
 However, given the requirement of perhaps multiple clients (ios, android and web), why not make the API an actual API? Or the frontend an actual frontend.
 
 ## Dependencies and why?
@@ -61,7 +71,7 @@ However, given the requirement of perhaps multiple clients (ios, android and web
 ### Shared
 
 - We're using Axios for HTTP communication on both FE and BE.
-  Why? Axios is great! Easy to use and interceptors to handle authentication. JS internal "fetch" has improved quite a lot recently though.
+  Why? Axios is great! Easy to use and efficient interceptors to handle authentication etc. JS internal "fetch" has improved quite a lot recently though.
 - Prettier and ESlint. Just standard config for the moment. Nothing special really.
 
 ### FE
@@ -75,8 +85,8 @@ However, given the requirement of perhaps multiple clients (ios, android and web
 
 ### BE
 
-- NestJS. This might be unfamiliar with you guys, but I assure you, it's as easy as it looks. It builds on top of Express makes middleware, interceptors and whatever you can imagine, sooo much easier and cleaner.
-  I find NestJs to do a great job in setting up API's. Usually I don't pack logic/business in my API. I create specific microservices or library/packages for such needs. However in this case, it seemed efficient since the logic is quite small, for the moment at least.
+- NestJS. This might be unfamiliar with you guys, but I assure you, it's as easy as it looks. It builds on top of Express makes middleware, interceptors and whatever you can imagine, sooo much cleaner code and efficient reusable components.
+  I find NestJS to do a great job in setting up API's. Usually I don't pack logic/business in my API. I create specific microservices or library/packages for such needs. However in this case, it seemed efficient since the logic is quite small, for the moment at least.
 - XML2JSON. Dealing with XML is always a haggle if you're super comfy in JSON. Decided to not put too much work into parsing. XML2JSON helps out a bunch of parsing XML into JSON for me to quickly use in the backend's Model Factories.
 
 ## What did I do and why?
@@ -100,7 +110,7 @@ Generally I see a lot to be polished and improved on the frontend. Overall I'm p
 Added some cool extra stuff in the front-end just because I got too excited about it. Like search and keep a viewing history to easy go back and read an item.
 Being able to locate a traffic item on the map by first finding in the list is pretty sweet too.
 
-### Issues to be resolved/improved upon.
+#### Issues to be resolved/improved upon.
 
 - If you have a recently viewed traffic item based in another location than your current. You won't be able to see it on the map, since we're only populating both map and list with current items based on position. Interest ways to solve this.
 - When selecting a new position with the map, sometimes the selected position marker won't show. I can't reproduce this, and it's super weird. Still have some research to do regarding the Maps package, since it's a relatively new one I haven't used before.
@@ -123,7 +133,7 @@ Note the Traffic Area Service and Traffic Message Service is indeed very small a
 
 Wanted to build it in a way where the backend uses cron job to fetch SR api every x minutes. Save result in DB. Then based on position given by client, just get the saved data instead of spamming SR's API lol. It's super similar to my app, Cue, where I fetched data from the Police API, process it and by some cool code, find out exactly where the crime/info happened (they just set lat & lng to the same, no matter the crime..). That was the whole idea with Cue.
 
-### Issues to be resolved/improved upon.
+#### Issues to be resolved/improved upon.
 
 - Weird XML parsing where wrapping element "Messages" of the messages response, being transformed into an Object of {Message: IMessage[]}. As mentioned, not too much focus on a perfect XML to JS/JSON parser..
   My reasoning it that SR's XML response looks the same with "SR" being the wrapper, then next element is "Areas" or "Messages". By having a XML parser, then configured for SR's response to account for their wrappers (to access the data we want). To extend the class, add a node selector parameter. Doing this.. Feels okay. For this I think it's good enough.
