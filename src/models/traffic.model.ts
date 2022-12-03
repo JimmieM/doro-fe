@@ -12,3 +12,8 @@ export interface ITraffic {
   category: number;
   subCategory: number;
 }
+
+export interface ITrafficAreaResponse {
+  messages: ITraffic[];
+  city: string;
+}

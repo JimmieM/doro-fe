@@ -22,6 +22,8 @@ export const HomePage = () => {
   );
 
   const [currentPosition, setCurrentPosition] = useState<LatLng | undefined>();
+  const [currentCity, setcurrentCity] = useState<string | undefined>();
+
   const [mapPosition, setMapPosition] = useState(currentPosition);
   const [trafficItems, setTrafficItems] = useState<ITraffic[] | undefined>();
 
@@ -83,7 +85,8 @@ export const HomePage = () => {
 
     getByLatLng(currentPosition?.lat, currentPosition?.lng).then(
       (trafficResult) => {
-        setTrafficItems(trafficResult);
+        setTrafficItems(trafficResult?.messages);
+        setcurrentCity(trafficResult?.city);
       }
     );
   }, [currentPosition, getByLatLng]);
@@ -124,12 +127,17 @@ export const HomePage = () => {
                             primary
                             onClick={openSelectLocationModalClick}
                             title={
-                              !currentPosition
+                              !currentPosition && !currentCity
                                 ? "Ingen position vald "
+                                : currentCity
+                                ? currentCity
                                 : `${currentPosition?.lat} ${currentPosition?.lng}`
                             }
                             leftIcon={MapPinIcon}
                           />
+                          <p className="mt-2 text-xs font-normal text-gray-500">
+                            {`${currentPosition?.lat} ${currentPosition?.lng}`}
+                          </p>
                         </div>
                       </div>
                       <div className="mt-6">

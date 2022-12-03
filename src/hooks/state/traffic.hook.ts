@@ -1,11 +1,14 @@
 import create from "zustand";
 import { TrafficAPI } from "../../api/traffic.api";
-import { ITraffic } from "../../models/traffic.model";
+import { ITraffic, ITrafficAreaResponse } from "../../models/traffic.model";
 
 type TrafficState = {
   items: ITraffic[] | undefined;
   viewedItems: ITraffic[];
-  getByLatLng: (lat: number, lng: number) => Promise<ITraffic[] | undefined>;
+  getByLatLng: (
+    lat: number,
+    lng: number
+  ) => Promise<ITrafficAreaResponse | undefined>;
   addToViewedlist(item: ITraffic): void;
   clearViewedList(): void;
 };
@@ -23,11 +26,11 @@ export const useTraffic = create<TrafficState>((set, get) => {
       set({ viewedItems: [...get().viewedItems, item] });
     },
     async getByLatLng(lat: number, lng: number) {
-      const items = await TrafficAPI.GetByLatLng(lat, lng);
-      if (!items) return undefined;
+      const response = await TrafficAPI.GetByLatLng(lat, lng);
+      if (!response) return undefined;
 
-      set({ items });
-      return items;
+      set({ items: response.messages });
+      return response;
     },
   };
 });
