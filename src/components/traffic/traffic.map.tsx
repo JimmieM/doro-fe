@@ -46,8 +46,10 @@ const TrafficMap: FC<TrafficMapProps> = ({
       items
         ? items.map((item, idx) => (
             <Marker
+              children={<p>Hello</p>}
               key={idx}
               label={item.title}
+              title={item.title}
               position={{ lat: item.latitude, lng: item.longitude }}
               onClick={() => onItemClick(item)}
             />

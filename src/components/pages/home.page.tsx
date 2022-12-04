@@ -1,3 +1,4 @@
+import { GlobeEuropeAfricaIcon } from "@heroicons/react/24/outline";
 import { useCallback, useEffect, useState } from "react";
 import useLocalStorage from "../../hooks/localstorage.hook";
 import { useCurrentPosition } from "../../hooks/state/current-position.hook";
@@ -17,7 +18,7 @@ export const HomePage = () => {
 
   const [isMapView, setIsMapView, toggleMapView] = useLocalStorage(
     MAP_VIEW_LOCALSTORAGE_KEY,
-    false
+    true
   );
 
   const [mapPosition, setMapPosition] = useState(position);
@@ -72,7 +73,9 @@ export const HomePage = () => {
                     Trafikstörningar {city ? `nära ${city}` : ""}
                   </h1>
                   <SimpleToggle
-                    title="Kartvy"
+                    title={
+                      <GlobeEuropeAfricaIcon className="w-6 h-6  text-gray-500" />
+                    }
                     enabled={isMapView}
                     onChange={() => toggleMapView()}
                   />

@@ -17,34 +17,30 @@ Backend: NodeJS, NestJS, TypeScript, Docker
 
 Frontend focus: Light-weight, comprehensive and clean UI. Easy to see and find relevant data. Responsive enough to use on most common devices.
 
-#### Criticism is highly appreciated. Please.
-
 ### Focus
 
 This solution (FE and BE) is focused on full-stack mostly. I didn't go deeper in any direction than needed to suffice the requirements of a MVP. I chose technologies and libraries I feel warm in to feel confident in delivering quality code in time.
 
 Given the information of the test I made the assumption of knowing what the MVP would be:
--We want to pull data from the Sveriges Radion Trafik API
--A client must provide a geolocation for traffic notifications
--A client can update the geolocation for traffic notifications
--A client shows a relevant traffic incident that contains at a minimum (prio, title, location etc...)
-Not knowing what's to come, given my decisions of working on it as "blackbox". It's not over-engineered to account for everything in the future, but not closed up making it hard to extend.
 
-Laying a small foundation, not bigger than needed, but broad enough to implement clean code and seperation. The backend being adaptable to extend with more features for both Traffic and new functionality.
-Same goes for frontend. What's missing is base implementation of context/auth and/or routing. Given this is very easy to add upon, but not yet needed.
-Having reusable smaller components such as buttons, input, toggles & even some hooks, it could easily be extended. I don't find any modules being too highly coupled either.
+- We want to pull data from the Sveriges Radion Trafik API
+- A client must provide a geolocation for traffic notifications
+- A client can update the geolocation for traffic notifications
+- A client shows a relevant traffic incident that contains at a minimum (prio, title, location etc...)
+
+Laying a small foundation adaptable enough to extend with more features for both Traffic and new functionality. Easy for continious implementation of clean code and seperation.
 
 ## Core technologies and why?
 
 ### FE
 
 React with Tailwind. Of course I used Typescript.
-Why Tailwind (rant)?
+Why Tailwind?
 Since starting to code, writing css has always been lots of work. Learning all of it and then to use it effiently in a larger codebase. As much as love writing UI. Laying the groundworks takes a lot of time. From writing reusable classes to implementing the actual design guide and so on. Don't even begin with responsiveness. Getting a quick responsive feel with Tailwind's media query prefixes is really comfortable. Same with accessibilty.
 
 #### Tailwind rant - optional
 
-I've tried out many libraries and ways to improve styling. From simplifying classic css with scss to styled components, stitches UI. Over to bigger libraries such as Material UI and Chakra UI. Having a bigger library for this application now seems overkill at best.
+I've tried out many libraries and ways to improve styling. From simplifying classic css with scss to styled components, Bootstrap, stitches UI. Over to bigger libraries such as Material UI and Chakra UI. Having a bigger library for this application now seems overkill at best.
 
 Tailwind's learning curve can be quite steep, but writing code has never been more enjoyable for me. Most templating, excessive css and styling is minified. There's a tradeoff for the html to grow and become unreadable (which personally I don't agree with).. If the html becomes too large with tailwind, it's usually too large without tailwind. More concise and reusable components which needs reusable css. Is usually as well contained in their components, just without their css files.
 
@@ -62,7 +58,7 @@ I created a seperate package [doro-docker](https://github.com/JimmieM/doro-docke
 
 ## General infrastructure
 
-#### AWS <3
+#### AWS
 
 The frontend is served on an S3 bucket with CloudFront CDN on top.
 
@@ -83,24 +79,22 @@ However, given the requirement of perhaps multiple clients (ios, android and web
 
 ### FE
 
-- Tailwind/HeadlessUI. I just love it. It's super simple and easy to get an UI up and running. I didn't need any fancy functionality such as Material UI (where lots of computation and logic is "off the shelf")
+- Tailwind & HeadlessUI.
 - Create React App. Since I didn't see the need for multiple pages, or even SSR. I decided to go with a clean CRA. Downsides. Of course.
-- Google Maps. I went for a walk and imagined the UI, and Google Maps just seemed awesome for it. At least give the user an option!
-  As soon as the general modelling etc is done, implementing Google Maps wasn't such a hassle. Made a very similar thing in 2019. https://www.jimmiem.se/portfolio.html.
-  Also picking your position just seemed easier with Maps, as well as easier for the consumer. Type your coordinates manually? Who even does that nowadays.
-- Zustand. It's amazing. Zustand is literally like a global state hook. Doesn't fit all uses-cases, but sure do have a spot for this. User position and traffic items are stored like this. Prevent prop-drilling when needing Position in different places for example.
+- Google Maps
+- Zustand. It's amazing. Zustand is like a global state hook. Doesn't fit all uses-cases, but sure do have a spot for this. User position and traffic items are stored like this. Prevent prop-drilling when needing Position in different places for example.
 
 ### BE
 
-- NestJS. This might be unfamiliar with you guys, but I assure you, it's as easy as it looks. It builds on top of Express makes middleware, interceptors and whatever you can imagine, sooo much cleaner code and efficient reusable components.
-  I find NestJS to do a great job in setting up API's. Usually I don't pack logic/business in my API. I create specific microservices or library/packages for such needs. However in this case, it seemed efficient since the logic is quite small, for the moment at least.
+- NestJS. It builds on top of Express makes middleware, interceptors and whatever you can imagine, so much cleaner code and efficient reusable components.
+  Usually I don't pack logic/business in my API. I create specific microservices or library/packages for such needs. However in this case, it seemed efficient since the logic is quite small, for the moment at least.
 - XML2JSON. Dealing with XML is always a haggle if you're super comfy in JSON. Decided to not put too much work into parsing. XML2JSON helps out a bunch of parsing XML into JSON for me to quickly use in the backend's Model Factories.
 
 ## What did I do and why?
 
 ### FE
 
-UI-wise, I didn't have a clear vision. For starter I wanted a list with map view option, with a clear indication of the users position. I don't want changing position or anything to be a haggle so just think simple. Provided by a simple button in the left top corner and the content (map/view) in the center.
+UI-wise, I didn't have a clear vision. For starter I wanted a list with map view option, with a clean indication of the users position. I don't want changing position or anything to be a haggle so just think simple. Provided by a simple button in the left top corner and the content (map/view) in the center.
 Clicking the button should simply provide the user with a map to select another position, if wanted.
 
 Most components are written to be reusable. Such as buttons, toggles, cards and modals.
@@ -116,28 +110,25 @@ Generally I see a lot to be polished and improved on the frontend. Overall I'm p
 Added some cool extra stuff in the front-end just because I got too excited about it. Like search and keep a viewing history to easy go back and read an item.
 Being able to locate a traffic item on the map by first finding in the list is pretty sweet too.
 
-No need to enter Tailwind-land again.
-
 #### Key issues to be resolved/improved upon.
 
 - If you have a recently viewed traffic item based in another location than your current. You won't be able to see it on the map, since we're only populating both map and list with current items based on position. Interest ways to solve this.
 - When selecting a new position with the map, sometimes the selected position marker won't show. I can't reproduce this, and it's super weird. Still have some research to do regarding the Maps package, since it's a relatively new one I haven't used before.
 - Modal widths could be improved.
+- Missing implementation of context/auth and/or routing. Given this is very easy to add upon, but not needed due to no implementation of notifications & users.
 
 ### BE
 
-I love architecture and seperation of concerns. Everything in-between. My head itches when I know I can make something even easier or better, clearer, whatever.
-
-I decided to follow a simple rule when desiging the backend. Don't make it complicated. But not too coupled...
+I don't want to make it complicated. But not too coupled...
 Simply the Traffic Controller will ask the Traffic Service for messages for certain area.
 The Traffic Service will check with the Area Service to retreive correct area name for given position.
 The Area Service basically has an API to connect to SR. When XML is retreived, its being parsed by an "Traffic XML parser", which itself is just an extension of a XML parser (very small class I wrote to encapsulate these things). The Area Service also has it own model factory to convert XML/DTO from SR into usably Models for our applications. The Messages Service works in the same way.
 
-This gives the Traffic Service a parent-state. Maybe too much dependecies. But I feel it's okay for this.
+This gives the Traffic Service a "parent" status or a monolithic pattern. Maybe too much dependecies. But I feel it's okay for this circumstance.
 
 Area and messaging are two different concerns in SR's API. Given it should behave the same in ours. Not because we have too, but because it makes sense in our case as well.
 
-Note the Traffic Area Service and Traffic Message Service is indeed very small and maybe doesn't need to be encapuslated as yet.
+Note the Traffic Area Service and Traffic Message Service is indeed very small and maybe doesn't yet need to be encapuslated.
 
 #### Issues to be resolved/improved upon.
 
@@ -147,17 +138,11 @@ Note the Traffic Area Service and Traffic Message Service is indeed very small a
 
 ## Testing
 
-I've written tests to cover the lowest functionality. No E2E or integration. Rather unit tests covering the general flow of a specific service while mocking the actual API call. Making sure the data is being processed properly.
+I've written tests to cover the lowest functionality. No E2E or integration. Rather unit tests covering the general flow of a specific service while mocking the actual API call. Making sure the data is being processed properly by low XML test.
 
-### Note. Pls dont steal my Maps API key x). Due to assessment of data and security, the .env files is commited. Bad practice generally IMO.
-
-#### Thank you for reading!
-
-There's lots more to discuss. Please reach out with comments =)
+#### Thank you for reading! Criticism is highly appreciated.
 
 [dontClickThisLink](https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley)
-
--
 
 ### `npm start`. Dont forget the npm install.
 

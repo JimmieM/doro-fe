@@ -87,7 +87,7 @@ const TrafficListItem: FC<TrafficListItemProps> = ({
       className="relative py-5 pl-4 pr-6 hover:bg-gray-50 sm:py-6 sm:pl-6 lg:pl-8 xl:pl-6"
     >
       <div className="flex items-center justify-between space-x-4">
-        <div className="min-w-0 space-y-3">
+        <div className="min-w-0  space-y-3">
           <div className="group relative flex items-center space-x-2.5">
             <span
               className={classNames(
@@ -119,7 +119,7 @@ const TrafficListItem: FC<TrafficListItemProps> = ({
             aria-hidden="true"
           />
         </div>
-        <div className="hidden flex-shrink-0 flex-col items-end space-y-3 sm:flex">
+        <div className="flex-shrink-0 flex-col items-end space-y-3 sm:flex">
           <p className="flex space-x-2 text-sm text-gray-500">
             <span>{formatDate(item.createdDate)}</span>
             <span aria-hidden="true">&middot;</span>

@@ -3,7 +3,7 @@ import { Switch } from "@headlessui/react";
 import classNames from "classnames";
 
 interface SimpleToggleProps {
-  title?: string;
+  title?: JSX.Element | string;
   description?: string;
   enabled: boolean;
   onChange: (enabled: boolean) => void;
