@@ -116,6 +116,7 @@ Being able to locate a traffic item on the map by first finding in the list is p
 - When selecting a new position with the map, sometimes the selected position marker won't show. I can't reproduce this, and it's super weird. Still have some research to do regarding the Maps package, since it's a relatively new one I haven't used before.
 - Modal widths could be improved.
 - Missing implementation of context/auth and/or routing. Given this is very easy to add upon, but not needed due to no implementation of notifications & users.
+- I'm using built-in navigation listener to get user coordinates. Noticed it sometimes resets the current position if you've changed to another city etc. This is something that could be improved by also adding an option for the user to select a new position or auto-detect current.
 
 ### BE
 
