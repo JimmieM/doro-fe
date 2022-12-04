@@ -18,7 +18,7 @@ export const HomePage = () => {
 
   const [isMapView, setIsMapView, toggleMapView] = useLocalStorage(
     MAP_VIEW_LOCALSTORAGE_KEY,
-    true
+    false
   );
 
   const [mapPosition, setMapPosition] = useState(position);
@@ -41,7 +41,7 @@ export const HomePage = () => {
   const onShowOnMapClick = useCallback(
     (item: ITraffic) => {
       setMapPosition({ lat: item.latitude, lng: item.longitude });
-      setIsMapView();
+      setIsMapView(true);
       closeDetailItemOnClick();
     },
     [closeDetailItemOnClick, setIsMapView]

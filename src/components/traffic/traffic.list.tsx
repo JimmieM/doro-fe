@@ -43,7 +43,7 @@ export const TrafficList: FC<TrafficListProps> = ({ items, onItemClick }) => {
         value={searchQuery}
         onChange={setSearchQuery}
       />
-      {trafficItems && trafficItems?.length > 1 ? (
+      {trafficItems && trafficItems?.length > 0 ? (
         <ul className="divide-y divide-gray-200 border-b border-gray-200 hover:cursor-pointer">
           {trafficItems.map((item, idx) => (
             <TrafficListItem key={idx} item={item} onItemClick={onItemClick} />

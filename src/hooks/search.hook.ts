@@ -12,8 +12,9 @@ export const useSearch = <T>(
   const prevSearchStr = usePrevious(searchStr);
 
   useEffect(() => {
-    const match = (val: string | undefined) =>
-      val?.toLowerCase().includes(searchStr.toLowerCase());
+    const match = (val: string | undefined) => {
+      return val?.toLowerCase().includes(searchStr.toLowerCase());
+    };
 
     const filterList = (list: T[]) =>
       list.filter((d) =>
@@ -36,5 +37,6 @@ export const useSearch = <T>(
       if (searchStr !== "" && emptyIfNoQuery && list) setRes(filterList(list));
     }
   }, [emptyIfNoQuery, find, list, prevList, prevSearchStr, searchStr]);
+
   return res;
 };
