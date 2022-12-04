@@ -1,5 +1,5 @@
 import { MapPinIcon, XMarkIcon } from "@heroicons/react/20/solid";
-import { FC, useCallback, useState } from "react";
+import { FC, useCallback, useMemo, useState } from "react";
 import { useCurrentPosition } from "../../hooks/state/current-position.hook";
 import { useTraffic } from "../../hooks/state/traffic.hook";
 import { LatLng } from "../../models/position.model";
@@ -38,6 +38,16 @@ export const PositionSidebar: FC<PositionSidebarProps> = ({
     [closeSelectLocationModalClick, setPosition]
   );
 
+  const positionButtonTitleMemo = useMemo(
+    () =>
+      !position && !city
+        ? "Välj en position"
+        : city
+        ? city
+        : `${position?.lat} ${position?.lng}`,
+    [city, position]
+  );
+
   return (
     <>
       <SelectGeoLocationModal
@@ -59,13 +69,7 @@ export const PositionSidebar: FC<PositionSidebarProps> = ({
                     primary
                     fullWidth
                     onClick={openSelectLocationModalClick}
-                    title={
-                      !position && !city
-                        ? "Välj en position"
-                        : city
-                        ? city
-                        : `${position?.lat} ${position?.lng}`
-                    }
+                    title={positionButtonTitleMemo}
                     leftIcon={MapPinIcon}
                   />
                   {position && (
