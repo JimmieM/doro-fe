@@ -34,7 +34,7 @@ export const SimpleSearch: FC<SimpleSearchProps> = ({
           type="text"
           name="input"
           id="input"
-          className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pr-10 sm:text-sm border-gray-300"
+          className="focus:ring-red-500 focus:border-red-500 block w-full pr-10 sm:text-sm border-gray-300"
           placeholder={placeholder || "Sök ..."}
         />
         <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">

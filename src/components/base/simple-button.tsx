@@ -58,10 +58,10 @@ export const SimpleButton: FC<SimpleButtonProps> = (props) => {
   const className = useMemo(
     () =>
       primary
-        ? `inline-flex justify-center items-center px-4 py-2 border border-transparent shadow-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm`
+        ? `inline-flex justify-center items-center px-4 py-2 border border-transparent shadow-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:text-sm`
         : `inline-flex justify-center items-center px-4 py-2 border border-transparent shadow-sm font-medium rounded-md text-gray-700 ${
             !transparent &&
-            "focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 "
+            "focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 "
           } sm:text-sm`,
     [primary, transparent]
   );
