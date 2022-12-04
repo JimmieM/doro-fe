@@ -1,15 +1,15 @@
 ### Overview
 
-- Hosted URL Frontend: doro.inventable.se
-- Hosted URL Backend: doro-api.inventable.se
+- Hosted URL Frontend: [doro.inventable.se](doro.inventable.se)
+- Hosted URL Backend: [doro-api.inventable.se](doro-api.inventable.se)
 
-example: https://doro-api.inventable.se/traffic/position?lat=200&lng=200
+example: [https://doro-api.inventable.se/traffic/position?lat=200&lng=200](https://doro-api.inventable.se/traffic/position?lat=200&lng=200)
 
 Packages/libs:
 
-- [Frontend](https://github.com/JimmieM/doro-fe)
-- [Backend](https://github.com/JimmieM/doro-be)
-- [Docker](https://github.com/JimmieM/doro-docker)
+- [Github - Frontend](https://github.com/JimmieM/doro-fe)
+- [Github - Backend](https://github.com/JimmieM/doro-be)
+- [Github - Docker](https://github.com/JimmieM/doro-docker)
 
 Cloud provider: AWS with services EC2, Application Load Balancer, CloudFront, S3
 Frontend: React SPA, TypeScript
@@ -141,8 +141,6 @@ Note the Traffic Area Service and Traffic Message Service is indeed very small a
 I've written tests to cover the lowest functionality. No E2E or integration. Rather unit tests covering the general flow of a specific service while mocking the actual API call. Making sure the data is being processed properly by low XML test.
 
 #### Thank you for reading! Criticism is highly appreciated.
-
-[dontClickThisLink](https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley)
 
 ### `npm start`. Dont forget the npm install.
 
