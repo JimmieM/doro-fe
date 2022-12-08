@@ -1,13 +1,8 @@
-import React, { FC, useMemo } from "react";
-import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
-import Config from "../../config";
+import { Marker } from "@react-google-maps/api";
+import { FC, useMemo } from "react";
 import { LatLng } from "../../models/position.model";
 import { ITraffic } from "../../models/traffic.model";
-
-const containerStyle = {
-  width: "100%",
-  height: "600px",
-};
+import { SimpleMap } from "../base/simple-map";
 
 interface TrafficMapProps {
   currentPosition: LatLng | undefined;
@@ -15,38 +10,16 @@ interface TrafficMapProps {
   onItemClick: (item: ITraffic) => void;
 }
 
-const TrafficMap: FC<TrafficMapProps> = ({
-  currentPosition,
+export const TrafficMap: FC<TrafficMapProps> = ({
   items,
   onItemClick,
+  currentPosition,
 }) => {
-  const { isLoaded } = useJsApiLoader({
-    id: "google-map-script",
-    googleMapsApiKey: Config.gmapsApiKey || "",
-  });
-
-  const [map, setMap] = React.useState<google.maps.Map | null>(null);
-
-  const onLoad = React.useCallback(
-    function callback(map: google.maps.Map) {
-      const bounds = new window.google.maps.LatLngBounds(currentPosition);
-      map.fitBounds(bounds);
-
-      setMap(map);
-    },
-    [currentPosition]
-  );
-
-  const onUnmount = React.useCallback(function callback(_map: google.maps.Map) {
-    setMap(null);
-  }, []);
-
   const markers = useMemo(
     () =>
       items
         ? items.map((item, idx) => (
             <Marker
-              children={<p>Hello</p>}
               key={idx}
               label={item.title}
               title={item.title}
@@ -58,19 +31,5 @@ const TrafficMap: FC<TrafficMapProps> = ({
     [items, onItemClick]
   );
 
-  return isLoaded ? (
-    <GoogleMap
-      mapContainerStyle={containerStyle}
-      center={currentPosition}
-      zoom={9}
-      onLoad={onLoad}
-      onUnmount={onUnmount}
-    >
-      {markers}
-    </GoogleMap>
-  ) : (
-    <></>
-  );
+  return <SimpleMap initialPosition={currentPosition}>{markers}</SimpleMap>;
 };
-
-export default React.memo(TrafficMap);

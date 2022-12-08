@@ -8,7 +8,7 @@ import { SimpleToggle } from "../base/simple-toggle";
 import { PositionSidebar } from "../traffic/position-sidebar";
 import { TrafficDetailsModal } from "../traffic/traffic-details.modal";
 import { TrafficList } from "../traffic/traffic.list";
-import TrafficMap from "../traffic/traffic.map";
+import { TrafficMap } from "../traffic/traffic.map";
 
 const MAP_VIEW_LOCALSTORAGE_KEY = "HomePage_isMapView";
 

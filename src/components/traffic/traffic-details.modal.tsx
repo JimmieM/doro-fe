@@ -59,7 +59,6 @@ export const TrafficDetailsModal: FC<TrafficDetailsModalProps> = ({
         </div>
       </div>
     ),
-
     [cardDataMemo, item, showOnMap]
   );
 
